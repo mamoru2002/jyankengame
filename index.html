@@ -140,11 +140,59 @@
   <p id="result"></p>
 
   <script>
-  // =========================================
-  //
-  // ここにじゃんけんゲームのロジックを実装してください
-  //
-  // =========================================
+  const buttons = document.querySelectorAll(".button-group button");
+  const resultText = document.getElementById("result");
+  const hands = ["グー", "チョキ", "パー"];
+  const cheatCheckbox = document.getElementById("cheatMode");
+  let result;
+
+  const handMap = {
+    "✊ グー": "グー",
+    "✌️ チョキ": "チョキ",
+    "🖐 パー": "パー"
+  };
+
+    buttons.forEach(button => {
+      button.addEventListener("click",() => {
+        const playerHand = handMap[button.textContent];
+        let cpuHand = "";
+
+        if (cheatCheckbox.checked) {
+          if (playerHand === "グー")
+            cpuHand = "チョキ";
+          else if (playerHand === "チョキ")
+          cpuHand = "パー";
+          else if (playerHand === "パー")
+          cpuHand = "グー";
+        } else {
+          cpuHand = hands[Math.floor(Math.random() * 3)];
+        }
+        resultText.className = "";
+        if (playerHand === cpuHand) {
+          result = "あいこ！";
+          resultText.classList.add("draw");
+        } else if (
+          (playerHand === "グー" && cpuHand === "チョキ") ||
+          (playerHand === "チョキ" && cpuHand === "パー") ||
+          (playerHand === "パー" && cpuHand === "グー")) {
+            result = "あなたの勝ち！"
+            resultText.classList.add("win");
+          } else {
+            result = "あなたの負け！"
+            resultText.classList.add("lose");
+          }
+        resultText.textContent = `あなた：${playerHand}　相手：${cpuHand}　→ ${result}`;
+      })
+    });
+
+    cheatCheckbox.addEventListener("change", () => {
+      if (cheatCheckbox.checked) {
+        document.body.classList.add("cheat-active");
+      } else {
+        document.body.classList.add("cheat-active");
+      }
+    });
+
   </script>
 </body>
 </html>
